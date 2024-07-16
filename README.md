@@ -1,5 +1,9 @@
 # Northcoders News API
 
+Where I'm Up to:
+
+Creating test for endpoints. But ran into an issue with test suite and dont know where it come from, everything was working up to the point before i added catch block and error handling to my code. Might have to compare to previous commits to see what the issue is
+
 About this Project:
 
 
