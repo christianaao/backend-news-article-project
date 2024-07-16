@@ -4,7 +4,6 @@ const app = require("../app")
 const db = require("../db/connection")
 const seed = require("../db/seeds/seed")
 const request = require("supertest")
-const endpoints = require("../endpoints.json")
 
 beforeEach(() => {
     return seed(data)
