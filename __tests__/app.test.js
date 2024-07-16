@@ -4,6 +4,7 @@ const app = require("../app")
 const db = require("../db/connection")
 const seed = require("../db/seeds/seed")
 const request = require("supertest")
+const endpoints = require("../endpoints.json")
 
 beforeEach(() => {
     return seed(data)
@@ -26,16 +27,18 @@ describe("Dealing with all bad requests", () => {
     })
 })
 describe("GET /api/ Endpoints", () => {
-    // test("GET /api returns status 200 and an array of all possible endpoints", () => {
-    //     return request(app)
-    //     .get("/api")
-    //     .expect(200)
-    //     .then((response) => {
-    //         const body = response.body
-    //         expect(body.length).toBe(endpoints.length)
-    //         console.log(endpoints)
-    //     })
-    // })
+    test("GET /api returns status 200 and an array of all possible endpoints", () => {
+        return request(app)
+        .get("/api")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(body.endpoints).toEqual(endpoints)
+            console.log(endpoints)
+        })
+    })
+})
+describe('GET /api/topics', () => {
     test("GET /api/topics returns status 200 and returns an array of topic data to the client", () => {
         return request(app)
         .get("/api/topics")
@@ -51,4 +54,4 @@ describe("GET /api/ Endpoints", () => {
             })
         })
     })
-})
+});
