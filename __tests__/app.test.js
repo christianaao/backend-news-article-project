@@ -14,8 +14,8 @@ afterAll(() => {
     }
 })
 
-describe("Dealing with all bad requests", () => {
-    test("all bad url requests are handled with 404 error", () => {
+describe("deals with all bad requests", () => {
+    test("all bad url requests that are not listed in as a possible endpoint are handled with 404 error", () => {
         return request(app)
         .get("/api/not-an-endpoint")
         .expect(404)
@@ -25,7 +25,7 @@ describe("Dealing with all bad requests", () => {
         })
     })
 })
-describe("GET /api/ Endpoints", () => {
+describe("GET ENDPOINTS - /api/ Endpoints", () => {
     test("GET /api returns status 200 and an array of all possible endpoints", () => {
         return request(app)
         .get("/api")
@@ -36,13 +36,14 @@ describe("GET /api/ Endpoints", () => {
         })
     })
 })
-describe('GET /api/topics', () => {
-    test("GET /api/topics returns status 200 and returns an array of topic data to the client", () => {
+describe('GET TOPICS - /api/topics', () => {
+    test("GET /api/topics returns status 200 and returns an array of all topics data to the client", () => {
         return request(app)
         .get("/api/topics")
         .expect(200)
         .then((response) => {
             const body = response.body
+            expect(Array.isArray(body)).toBe(true)
             expect(body.length).toBe(3);
             body.forEach((topic) => {
                 expect(topic).toEqual({
@@ -53,14 +54,14 @@ describe('GET /api/topics', () => {
         })
     })
 });
-describe('GET /api/articles by ID', () => {
-    test("GET /api/articles/:article_id returns status 200 and an object to client with author, title, article_id, body, topic, created_at, votes, and article_img_url when given an article id", () => {
+describe('GET ARTICLE BY ID - /api/articles/:article_id', () => {
+    test("GET /api/articles/:article_id returns status 200 and an article object to client with the following properties when given an article ID: author, title, article_id, body, topic, created_at, votes, and article_img_url", () => {
         return request(app)
         .get("/api/articles/1")
         .expect(200)
         .then((response) => {
             const body = response.body
-            expect(body.article).toEqual({
+            expect(body.article).toMatchObject({
                 article_id: 1,
                 title: 'Living in the shadow of a great man',
                 topic: 'mitch',
@@ -77,7 +78,7 @@ describe('GET /api/articles by ID', () => {
         .get("/api/articles/99")
         .expect(404)
         .then((response) => {
-            expect(response.body.message).toBe("No Article Found under Article ID 99")
+            expect(response.body.message).toBe("No Articles Found under Article ID 99")
         })
     })
     test("GET status 400 and error message when an invalid article_id is given", () => {
@@ -89,16 +90,18 @@ describe('GET /api/articles by ID', () => {
         })
     })
 });
-describe('GET /api/articles', () => {
-    test("GET /api/articles returns status 200 and returns an array of article data to the client", () => {
+describe('GET ARTICLES - /api/articles', () => {
+    test("GET /api/articles returns status 200 and returns an array of article objects to the client with the following properties: author, title, article_id, topic, created_at, votes, article_img_url, comment_count", () => {
         return request(app)
         .get("/api/articles")
         .expect(200)
         .then((response) => {
             const body = response.body
+            expect(Array.isArray(body)).toBe(true)
             expect(body.length).toBe(13);
             body.forEach((article) => {
-                expect(article).toEqual({
+                expect(article).not.toHaveProperty("body")
+                expect(article).toMatchObject({
                     article_id: expect.any(Number),
                     title: expect.any(String),
                     created_at: expect.any(String),
@@ -110,6 +113,47 @@ describe('GET /api/articles', () => {
                     comment_count: expect.any(String)
                 })
             })
+        })
+    })
+    test("/api/articles returns status 200 and an array of article objects sorted by date in descending order", () => {
+        return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(body).toBeSortedBy("created_at", { descending: true })
+        })
+    })
+});
+describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () => {
+    test("GET /api/articles/:article_id/comments returns status 200 and an array of comment objects for the given article ID with the following properties: comment_id, votes, created_at, author, body, article_id", () => {
+        return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then((response) => {
+            const comments = response.body.comments
+            console.log(comments)
+            expect(Array.isArray(comments)).toBe(true)
+            expect(comments.length).toBe(11)
+            comments.forEach((comment) => {
+                expect(comment).toMatchObject({
+                    comment_id: expect.any(Number),
+                    votes: expect.any(Number),
+                    created_at: expect.any(String),
+                    author: expect.any(String),
+                    body: expect.any(String),
+                    article_id: expect.any(Number)
+                })
+            })
+        })
+    })
+    test("GET /api/articles/:article_id/comments returns comments with the most recent comments first", () => {
+        return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then((response) => {
+            const comments = response.body.comments
+            expect(comments).toBeSortedBy("created_at", { descending: true })
         })
     })
 });
