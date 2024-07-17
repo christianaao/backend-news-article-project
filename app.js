@@ -2,13 +2,17 @@ const express = require("express")
 const app = express()
 const { getTopics } = require("./controllers/topics.controller")
 const { getEndpoints } = require("./controllers/endpoints.controller")
-const { getArticleByID } = require("./controllers/articles.controllers")
+const { getArticleByID, getArticles } = require("./controllers/articles.controllers")
 
 app.get("/api", getEndpoints)
 
 app.get("/api/topics", getTopics)
 
+app.get("/api/articles",getArticles)
+
 app.get("/api/articles/:article_id", getArticleByID)
+
+// Error Handling
 
 app.use((err, request, response, next) => {
     if(err.code === "22P02") {

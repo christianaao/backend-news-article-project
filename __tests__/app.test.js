@@ -53,7 +53,7 @@ describe('GET /api/topics', () => {
         })
     })
 });
-describe('GET /api/articles', () => {
+describe('GET /api/articles by ID', () => {
     test("GET /api/articles/:article_id returns status 200 and an object to client with author, title, article_id, body, topic, created_at, votes, and article_img_url when given an article id", () => {
         return request(app)
         .get("/api/articles/1")
@@ -80,12 +80,36 @@ describe('GET /api/articles', () => {
             expect(response.body.message).toBe("No Article Found under Article ID 99")
         })
     })
-    test("GET status 400 and error message when an invalid id is given", () => {
+    test("GET status 400 and error message when an invalid article_id is given", () => {
         return request(app)
         .get("/api/articles/not-an-id")
         .expect(400)
         .then((response) => {
             expect(response.body.message).toBe("Bad Request")
+        })
+    })
+});
+describe('GET /api/articles', () => {
+    test("GET /api/articles returns status 200 and returns an array of article data to the client", () => {
+        return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(body.length).toBe(13);
+            body.forEach((article) => {
+                expect(article).toEqual({
+                    article_id: expect.any(Number),
+                    title: expect.any(String),
+                    created_at: expect.any(String),
+                    topic: expect.any(String),
+                    author: expect.any(String),
+                    created_at: expect.any(String),
+                    votes: expect.any(Number),
+                    article_img_url: expect.any(String),
+                    comment_count: expect.any(String)
+                })
+            })
         })
     })
 });
