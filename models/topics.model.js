@@ -1,10 +1,10 @@
 const db = require("../db/connection")
 
-const fetchAllTopics = () => {
+const selectAllTopics = () => {
     return db.query(`SELECT * FROM topics;`)
     .then((result) => {
         return result.rows
     })
 }
 
-module.exports = fetchAllTopics
+module.exports = selectAllTopics
