@@ -86,7 +86,7 @@ describe('GET ARTICLE BY ID - /api/articles/:article_id', () => {
         .get("/api/articles/not-an-id")
         .expect(400)
         .then((response) => {
-            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Article ID")
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in URL")
         })
     })
 });
@@ -174,7 +174,7 @@ describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () =
         .get("/api/articles/not-an-id/comments")
         .expect(400)
         .then((response) => {
-            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Article ID")
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in URL")
         })
     })
 });
@@ -189,6 +189,7 @@ describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () 
         .send(comment)
         .expect(201)
         .then((response) => {
+            console.log(response.body.comment)
             expect(response.body.comment).toMatchObject({
                 comment_id: expect.any(Number),
                 votes: expect.any(Number),
@@ -221,7 +222,7 @@ describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () 
         .send(comment)
         .expect(400)
         .then((response) => {
-            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Article ID")
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in URL")
         })
     })
     test("POST /api/articles/:article_id/comments returns status 404 and does not post comment where article ID does not exist", () => {
@@ -298,7 +299,7 @@ describe('PATCH /api/articles/:article_id', () => {
         .send({ inc_votes : newVote })
         .expect(400)
         .then((response) => {
-            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Article ID")
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in URL")
             })
         })
     test("PATCH /api/articles/:article_id returns status 400 and does not make any changes where an incorrect data type is entered in the vote object", () => {
@@ -319,6 +320,29 @@ describe('PATCH /api/articles/:article_id', () => {
         .expect(404)
         .then((response) => {
             expect(response.body.message).toBe("Not Found: No Article Found under Article ID 99")
+        })
+    })
+});
+describe('DELETE /api/comments/:comment_id', () => {
+    test("DELETE /api/comments/:comment_id returns status 204 and deletes comment from database", () => {
+        return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+    })
+    test("DELETE /api/comments/:comment_id returns status 400 and does not delete comment where incorrect data type is entered for comment ID", () => {
+        return request(app)
+        .delete("/api/comments/not-an-id")
+        .expect(400)
+        .then((response) => {
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in URL")
+        })
+    })
+    test("DELETE /api/comments/:comment_id returns status 404 and does not delete comment where where comment ID does not exist", () => {
+        return request(app)
+        .delete("/api/comments/99")
+        .expect(404)
+        .then((response) => {
+            expect(response.body.message).toBe("Not Found: No Comment Found under Comment ID 99")
         })
     })
 });

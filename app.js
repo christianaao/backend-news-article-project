@@ -5,7 +5,7 @@ app.use(express.json())
 const { getTopics } = require("./controllers/topics.controller")
 const { getEndpoints } = require("./controllers/endpoints.controller")
 const { getArticleByID, getArticles, patchArticleVotesByArticleID } = require("./controllers/articles.controllers")
-const { getCommentsByArticleID, postComment } = require("./controllers/comments.controllers")
+const { getCommentsByArticleID, postComment, deleteComment } = require("./controllers/comments.controllers")
 
 app.get("/api", getEndpoints)
 
@@ -21,11 +21,13 @@ app.post("/api/articles/:article_id/comments", postComment)
 
 app.patch("/api/articles/:article_id", patchArticleVotesByArticleID)
 
+app.delete("/api/comments/:comment_id", deleteComment)
+
 // Error Handling
 
 app.use((err, request, response, next) => {
     if(err.code === "22P02") {
-        response.status(400).send({ message: "Bad Request: Invalid Data Entered in Article ID" })
+        response.status(400).send({ message: "Bad Request: Invalid Data Entered in URL" })
     } else {
         next(err)
     }
