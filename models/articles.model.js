@@ -6,7 +6,7 @@ exports.selectArticleByID = (article_id) => {
         if (result.rows.length === 0) {
             return Promise.reject({
                 status: 404,
-                message: `No Articles Found under Article ID ${article_id}`
+                message: `Not Found: No Article Found under Article ID ${article_id}`
             });
     }
     return result.rows[0];
@@ -35,5 +35,3 @@ exports.selectAllArticles = () => {
         return result.rows
     })
 }
-
-exports

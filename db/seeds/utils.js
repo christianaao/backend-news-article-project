@@ -1,3 +1,5 @@
+const db = require("../connection")
+
 exports.convertTimestampToDate = ({ created_at, ...otherProperties }) => {
   if (!created_at) return { ...otherProperties };
   return { created_at: new Date(created_at), ...otherProperties };
@@ -20,3 +22,30 @@ exports.formatComments = (comments, idLookup) => {
     };
   });
 };
+
+exports.checkArticleIDExists = (article_id) => {
+  return db.query("SELECT * FROM articles WHERE article_id = $1", [article_id])
+  .then(({rows}) => {
+    if(rows.length === 0) {
+      return false
+    } else {return true}
+  })
+}
+
+exports.checkUsernameExists = (username) => {
+  return db.query("SELECT * FROM users WHERE username = $1", [username])
+  .then(({rows}) => {
+    if(rows.length === 0) {
+      return false
+    } else {return true}
+  })
+}
+
+exports.checkArgumentsAreValid = ([...args]) => {
+  function isValid(arg) {
+    if (!arg || arg === "NULL" || arg === "null" || arg === "undefined") {
+      return false 
+  } else {return true}
+  }
+  return args.every(isValid)
+}

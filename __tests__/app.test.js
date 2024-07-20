@@ -21,7 +21,7 @@ describe("deals with all bad requests", () => {
         .expect(404)
         .then(({body}) => {
             const {message} = body
-            expect(message).toBe("404 - Requested Endpoint Not Found!")
+            expect(message).toBe("Not Found: Requested Endpoint Not Found!")
         })
     })
 })
@@ -78,15 +78,15 @@ describe('GET ARTICLE BY ID - /api/articles/:article_id', () => {
         .get("/api/articles/99")
         .expect(404)
         .then((response) => {
-            expect(response.body.message).toBe("No Articles Found under Article ID 99")
+            expect(response.body.message).toBe("Not Found: No Article Found under Article ID 99")
         })
     })
-    test("GET status 400 and error message when an invalid article_id is given", () => {
+    test("GET /api/articles/:article_id returns status 400 and error message when an invalid article_id is given", () => {
         return request(app)
         .get("/api/articles/not-an-id")
         .expect(400)
         .then((response) => {
-            expect(response.body.message).toBe("Bad Request")
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered")
         })
     })
 });
@@ -132,7 +132,6 @@ describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () =
         .expect(200)
         .then((response) => {
             const comments = response.body.comments
-            console.log(comments)
             expect(Array.isArray(comments)).toBe(true)
             expect(comments.length).toBe(11)
             comments.forEach((comment) => {
@@ -156,4 +155,106 @@ describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () =
             expect(comments).toBeSortedBy("created_at", { descending: true })
         })
     })
+    test("GET /api/articles/:article_id/comments returns status 200 and an empty array of comments when a valid article ID is given which has no comments", () => {
+        return request(app)
+        .get("/api/articles/2/comments")
+        .expect(200)
+        .then()
+    })
+    test("GET /api/articles/:article_id/comments returns status 404 and error message when given a valid article ID data type which does not exist", () => {
+        return request(app)
+        .get("/api/articles/99/comments")
+        .expect(404)
+        .then((response) => {
+            expect(response.body.message).toBe("Not Found: No Comments Found under Article ID 99")
+        })
+    })
+    test("GET /api/articles/:article_id/comments returns status 400 and error message when an invalid article ID is given", () => {
+        return request(app)
+        .get("/api/articles/not-an-id/comments")
+        .expect(400)
+        .then((response) => {
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered")
+        })
+    })
 });
+describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () => {
+    test("POST /api/articles/:article_id/comments returns status 201 and an object with the correct properties and ignores extra properties", () => {
+        const comment = {
+            username: "butter_bridge",
+            body: "Hello World"
+        }
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send(comment)
+        .expect(201)
+        .then((response) => {
+            expect(response.body.comment).toMatchObject({
+                comment_id: expect.any(Number),
+                votes: expect.any(Number),
+                created_at: expect.any(String),
+                author: "butter_bridge",
+                body: "Hello World",
+                article_id: 1
+            })
+        })
+    })
+    test("POST /api/articles/:article_id/comments returns status 400 and does not post comment where fields are missing", () => {
+        const comment = {
+            body: "Hello World"
+        }
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send(comment)
+        .expect(400)
+        .then((response) => {
+            expect(response.body.message).toBe("Bad Request: Missing Fields")
+        })
+    })
+    test("POST /api/articles/:article_id/comments returns status 400 and does not post comment where incorrect data type is entered for article ID", () => {
+        const comment = {
+            username: "butter_bridge",
+            body: "Hello World"
+        }
+        return request(app)
+        .post("/api/articles/not-an-id/comments")
+        .send(comment)
+        .expect(400)
+        .then((response) => {
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered")
+        })
+    })
+    test("POST /api/articles/:article_id/comments returns status 404 and does not post comment where article ID does not exist", () => {
+        const comment = {
+            username: "butter_bridge",
+            body: "Hello World"
+        }
+        return request(app)
+        .post("/api/articles/99/comments")
+        .send(comment)
+        .expect(404)
+        .then((response) => {
+            expect(response.body.message).toBe("Not Found: No Article Found under Article ID 99")
+        })
+    })
+    test("POST /api/articles/:article_id/comments returns status 404 and does not post comment where user does not exist", () => {
+        const comment = {
+            username: "iDontExist",
+            body: "Hello World"
+        }
+        return request(app)
+        .post("/api/articles/1/comments")
+        .send(comment)
+        .expect(404)
+        .then((response) => {
+            expect(response.body.message).toBe("Not Found: Username iDontExist Does Not Exist")
+        })
+    })
+});
+// 201 - receives all properties from comments
+// 201 - ignores extra properties
+//error handling:
+//  400 - does not post comment with missing fields
+//  400 - does not post comment where incorrect data type is entered for article ID
+// 404 -does not post comment where artcle ID does not exist
+//  404 - does not post comment where user does not exist
