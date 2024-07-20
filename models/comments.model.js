@@ -25,13 +25,12 @@ exports.selectCommentsByArticleID = (article_id) => {
 }
 
 exports.insertComment = (article_id, body, username) => {
-    const args = [article_id, body, username]
     const commentSqlString = format("INSERT INTO comments (article_id, body, author) VALUES %L RETURNING *;", [[article_id, body, username]])
 
     if (username === undefined || body === undefined) {
         return Promise.reject({
         status: 400,
-        message: `Bad Request: Missing Fields`
+        message: "Bad Request: Missing Fields"
         })
     }
 

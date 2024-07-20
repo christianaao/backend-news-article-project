@@ -21,7 +21,3 @@ exports.postComment = (request, response, next) => {
         next(err)
     })
 }
-//article_id - req.params
-//body - req.body
-//username - req.body
-//give model all info above

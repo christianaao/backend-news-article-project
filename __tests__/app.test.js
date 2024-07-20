@@ -86,7 +86,7 @@ describe('GET ARTICLE BY ID - /api/articles/:article_id', () => {
         .get("/api/articles/not-an-id")
         .expect(400)
         .then((response) => {
-            expect(response.body.message).toBe("Bad Request: Invalid Data Entered")
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Article ID")
         })
     })
 });
@@ -174,7 +174,7 @@ describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () =
         .get("/api/articles/not-an-id/comments")
         .expect(400)
         .then((response) => {
-            expect(response.body.message).toBe("Bad Request: Invalid Data Entered")
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Article ID")
         })
     })
 });
@@ -221,7 +221,7 @@ describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () 
         .send(comment)
         .expect(400)
         .then((response) => {
-            expect(response.body.message).toBe("Bad Request: Invalid Data Entered")
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Article ID")
         })
     })
     test("POST /api/articles/:article_id/comments returns status 404 and does not post comment where article ID does not exist", () => {
@@ -251,10 +251,74 @@ describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () 
         })
     })
 });
-// 201 - receives all properties from comments
-// 201 - ignores extra properties
-//error handling:
-//  400 - does not post comment with missing fields
-//  400 - does not post comment where incorrect data type is entered for article ID
-// 404 -does not post comment where artcle ID does not exist
-//  404 - does not post comment where user does not exist
+describe('PATCH /api/articles/:article_id', () => {
+    test("PATCH /api/articles/:article_id returns status 200 and a single article object with the votes updated", () => {
+        const newVote = 1
+        return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes : newVote })
+        .expect(200)
+        .then((response) => {
+            expect(response.body).
+            toMatchObject({
+                article_id: 1,
+                title: expect.any(String),
+                topic:  expect.any(String),
+                author: 'butter_bridge',
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: 101,
+                article_img_url: expect.any(String)
+            })
+        })
+    })
+    test("PATCH /api/articles/:article_id returns status 200 and a single updated article object", () => {
+        const newVote = -100
+        return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes : newVote })
+        .expect(200)
+        .then((response) => {
+            expect(response.body).toMatchObject({
+                article_id: 1,
+                title: expect.any(String),
+                topic:  expect.any(String),
+                author: 'butter_bridge',
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: 0,
+                article_img_url: expect.any(String)
+            })
+        })
+    })
+    test("PATCH /api/articles/:article_id returns status 400 and does not make any changes where an incorrect data type is entered for article ID", () => {
+        const newVote = 1
+        return request(app)
+        .patch("/api/articles/not-an-id")
+        .send({ inc_votes : newVote })
+        .expect(400)
+        .then((response) => {
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Article ID")
+            })
+        })
+    test("PATCH /api/articles/:article_id returns status 400 and does not make any changes where an incorrect data type is entered in the vote object", () => {
+        const newVote = "one"
+        return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes : newVote })
+        .expect(400)
+        .then((response) => {
+            expect(response.body.message).toBe("Bad Request: Invalid Data Entered in Votes Object: one")
+            })
+        })
+    test("PATCH /api/articles/:article_id returns status 404 and does not make any changes where article ID does not exist", () => {
+        const newVote = 1
+        return request(app)
+        .patch("/api/articles/99")
+        .send({ inc_votes : newVote })
+        .expect(404)
+        .then((response) => {
+            expect(response.body.message).toBe("Not Found: No Article Found under Article ID 99")
+        })
+    })
+});
