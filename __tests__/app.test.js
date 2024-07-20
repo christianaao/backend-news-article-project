@@ -159,7 +159,9 @@ describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () =
         return request(app)
         .get("/api/articles/2/comments")
         .expect(200)
-        .then()
+        .then((response) => {
+            expect(response.body.comments).toEqual([])
+        })
     })
     test("GET /api/articles/:article_id/comments returns status 404 and error message when given a valid article ID data type which does not exist", () => {
         return request(app)
@@ -189,7 +191,6 @@ describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () 
         .send(comment)
         .expect(201)
         .then((response) => {
-            console.log(response.body.comment)
             expect(response.body.comment).toMatchObject({
                 comment_id: expect.any(Number),
                 votes: expect.any(Number),
@@ -345,4 +346,31 @@ describe('DELETE /api/comments/:comment_id', () => {
             expect(response.body.message).toBe("Not Found: No Comment Found under Comment ID 99")
         })
     })
+});
+describe('GET /api/users', () => {
+    test("GET /api/users returns status 200 and an array of objects with the following properties: username, name, avatar_url", () => {
+        return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(4)
+            body.forEach((user) => {
+                expect(user).toMatchObject({
+                username: expect.any(String),
+                name: expect.any(String),
+                avatar_url: expect.any(String)
+                })
+            })
+        })
+    })
+    // test("GET /api/users returns status 404 and error message when an empty array of users is received", () => {
+    //     return request(app)
+    //     .get("/api/user")
+    //     .expect(404)
+    //     .then((response) => {
+    //         expect(response.body.message).toBe("Not Found: No Users Found")
+    //     })
+    // })
 });
