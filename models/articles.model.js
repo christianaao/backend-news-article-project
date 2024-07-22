@@ -65,7 +65,6 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
 
     return db.query(sqlString, queryTopics)
     .then((result) => {
-        console.log(result.rows)
         return result.rows
     })
 
