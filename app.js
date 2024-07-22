@@ -23,6 +23,7 @@ app.get("/api/articles/:article_id", getArticleByID)
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleID)
 
+
 // Post/Patch Requests
 
 app.post("/api/articles/:article_id/comments", postComment)
@@ -53,6 +54,11 @@ app.use((err, request, response, next) => {
 
 app.all("*", (request, response, next) => {
     response.status(404).send({message: "Not Found: Requested Endpoint Not Found!"})
+})
+
+app.use((err, request, response, next) => {
+    console.log(err)
+    response.status(500).send({message: "Internal Server Error"})
 })
 
 module.exports = app

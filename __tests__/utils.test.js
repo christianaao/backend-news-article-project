@@ -4,7 +4,8 @@ const {
   formatComments,
   checkArticleIDExists,
   checkUsernameExists,
-  checkArgumentsAreValid
+  checkArgumentsAreValid,
+  checkTopicExists
 } = require("../db/seeds/utils");
 const db = require("../db/connection")
 const seed = require("../db/seeds/seed")
@@ -172,5 +173,18 @@ describe("checkArgumentsAreValid", () => {
   test("returns false if an array of arguments contains an invalid argument", () => {
     const result = checkArgumentsAreValid(['1', 'Hello World', null])
     expect(result).toBe(false)
+  })
+})
+describe("checkTopicExists", () => {
+  test("returns true if topic exists", () => {
+    return checkTopicExists("mitch").then((result) => {
+      expect(result).toBe(true)
+    })
+  })
+  test("returns false if topic does not exist", () => {
+    return checkTopicExists("not-a-topic").then()
+    .catch((err) => {
+      expect(err).toEqual({status: 404, message: "Not Found: No Topic Found under not-a-topic"})
+    })
   })
 })

@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "be-nc-news",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"editor.guides.bracketPairs": true,
+		"editor.guides.bracketPairsHorizontal": true
+	}
+}

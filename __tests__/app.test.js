@@ -115,13 +115,15 @@ describe('GET ARTICLES - /api/articles', () => {
             })
         })
     })
-    test("/api/articles returns status 200 and an array of article objects sorted by date in descending order", () => {
+    test("/api/articles returns status 200 and an array of article objects sorted by date in descending order by default", () => {
         return request(app)
         .get("/api/articles")
         .expect(200)
         .then((response) => {
             const body = response.body
-            expect(body).toBeSortedBy("created_at", { descending: true })
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(13)
+            expect(body).toBeSortedBy("created_at", {descending: true})
         })
     })
 });
@@ -373,4 +375,125 @@ describe('GET /api/users', () => {
     //         expect(response.body.message).toBe("Not Found: No Users Found")
     //     })
     // })
+});
+describe('SORTING/ORDER FEATURE: GET /api/articles', () => {
+    // TEST DID NOT WORK :(
+    // test("returns status 200 and an array of article objects sorted by any valid column", () => {
+    //     const sortByQueries = ["title", "topic", "author", "created_at", "votes"]
+    //     sortByQueries.forEach((query) => {
+    //         return request(app)
+    //         .get(`/api/articles?sort_by=${query}`)
+    //         .expect(200)
+    //         .then((response) => {
+    //             const body = response.body
+    //             expect(Array.isArray(body)).toBe(true)
+    //             expect(body.length).toBe(13)
+    //             expect(body).toBeSortedBy(query, {descending: true})
+    //         })
+    //     })
+    // })
+    test("returns status 200 and an array of article objects sorted by title", () => {
+        return request(app)
+        .get("/api/articles?sort_by=title")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(13)
+            expect(body).toBeSortedBy("title", {descending: true})
+        })
+    })
+    test("returns status 200 and an array of article objects sorted by topic", () => {
+        return request(app)
+        .get("/api/articles?sort_by=topic")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(13)
+            expect(body).toBeSortedBy("topic", {descending: true})
+        })
+    })
+    test("returns status 200 and an array of article objects sorted by author", () => {
+        return request(app)
+        .get("/api/articles?sort_by=author")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(13)
+            expect(body).toBeSortedBy("author", {descending: true})
+        })
+    })
+    test("returns status 200 and an array of article objects sorted by votes", () => {
+        return request(app)
+        .get("/api/articles?sort_by=votes")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(13)
+            expect(body).toBeSortedBy("votes", {descending: true})
+        })
+    })
+    test("returns status 200 and an array of article objects in ascending order", () => {
+        return request(app)
+        .get("/api/articles?order=asc")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(13)
+            expect(body).toBeSortedBy("created_at")
+        })
+    })
+    test("returns status 400 and error message when given a valid sorty_by query which does not exist", () => {
+        return request(app)
+        .get("/api/articles?sort_by=body")
+        .expect(400)
+        .then((response) => {
+            expect(response.body.message).toBe("Invalid query: body")
+        })
+    })
+    test("returns status 400 and error message when given an invalid order query", () => {
+        return request(app)
+        .get("/api/articles?order=up")
+        .expect(400)
+        .then((response) => {
+            expect(response.body.message).toBe("Invalid query: up")
+        })
+    })
+});
+describe('FILTER FEATURE: GET /api/articles', () => {
+    test("returns status 200 and an array of filtered article objects by the specified topic value", () => {
+        return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(12)
+            body.forEach((article) => {
+                expect(article).toHaveProperty("topic", "mitch")
+            })
+        })
+    })
+    test("returns status 200 and an array of all article objects where no filter query has been given", () => {
+        return request(app)
+        .get("/api/articles?topic=")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(13)
+        })
+    })
+    test("returns status 404 and an error message when given a valid topic data type which does not exist", () => {
+        return request(app)
+        .get("/api/articles?topic=topicDoesntExist")
+        .expect(404)
+        .then((response) => {
+            expect(response.body.message).toBe("Not Found: No Topic Found under topicDoesntExist")
+        })
+    })
 });
