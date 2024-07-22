@@ -170,3 +170,12 @@
 //     .then((result) => {
 //         return result.rows
 //     })
+
+/* Notes
+
+// POST test - 201 - expect(comment object).not.toHaveProperty(anything extra). Any extra properties should either be false or not there
+remove specific error messages
+// for update votes, add Jodie's code
+dont check that its an array
+
+*/

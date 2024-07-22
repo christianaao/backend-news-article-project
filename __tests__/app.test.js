@@ -55,7 +55,7 @@ describe('GET TOPICS - /api/topics', () => {
     })
 });
 describe('GET ARTICLE BY ID - /api/articles/:article_id', () => {
-    test("GET /api/articles/:article_id returns status 200 and an article object to client with the following properties when given an article ID: author, title, article_id, body, topic, created_at, votes, and article_img_url", () => {
+    test("GET /api/articles/:article_id returns status 200 and an article object to client with the following properties when given an article ID: author, title, article_id, body, topic, created_at, votes, comment_count and article_img_url", () => {
         return request(app)
         .get("/api/articles/1")
         .expect(200)
@@ -69,7 +69,8 @@ describe('GET ARTICLE BY ID - /api/articles/:article_id', () => {
                 body: 'I find this existence challenging',
                 created_at: expect.any(String),
                 votes: 100,
-                article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+                article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                comment_count: expect.any(Number)
               })
         })
     })
@@ -165,6 +166,14 @@ describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () =
             expect(response.body.comments).toEqual([])
         })
     })
+     test("GET:200 article includes comment count", () => {
+      return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.article).hasOwnProperty("comment_count");
+        });
+    });
     test("GET /api/articles/:article_id/comments returns status 404 and error message when given a valid article ID data type which does not exist", () => {
         return request(app)
         .get("/api/articles/99/comments")
@@ -186,7 +195,8 @@ describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () 
     test("POST /api/articles/:article_id/comments returns status 201 and an object with the correct properties and ignores extra properties", () => {
         const comment = {
             username: "butter_bridge",
-            body: "Hello World"
+            body: "Hello World",
+            extraProperty: "shouldn't be here"
         }
         return request(app)
         .post("/api/articles/1/comments")
