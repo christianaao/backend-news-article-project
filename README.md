@@ -22,12 +22,14 @@ This project was written in JavaScript through test driven development (TDD) usi
 
 First clone or fork this repo
 
-Next, run: `npm install` in your terminal to install all dependencies. The required dependencies include:
+Next, run: `npm install` in your terminal to install all dependencies. 
+
+#### The required dependencies include:
 
  - dotenv
  - pg
 
-### Dev Dependencies:
+#### Dev Dependencies:
  - jest (including jest-extended and jest-sorted)
  - pg-format
  - supertest
