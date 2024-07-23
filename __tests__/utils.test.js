@@ -2,7 +2,23 @@ const {
   convertTimestampToDate,
   createRef,
   formatComments,
+  checkArticleIDExists,
+  checkUsernameExists,
+  checkArgumentsAreValid,
+  checkTopicExists
 } = require("../db/seeds/utils");
+const db = require("../db/connection")
+const seed = require("../db/seeds/seed")
+const data = require("../db/data/test-data/index")
+
+beforeEach(() => {
+  return seed(data)
+})
+afterAll(() => {
+  if (db.end){
+      return db.end()
+  }
+})
 
 describe("convertTimestampToDate", () => {
   test("returns a new object", () => {
@@ -102,3 +118,73 @@ describe("formatComments", () => {
     expect(formattedComments[0].created_at).toEqual(new Date(timestamp));
   });
 });
+describe("checkArticleIDExists", () => {
+  test("returns true if article exists", () => {
+    return checkArticleIDExists(1).then((result) => {
+      expect(result).toBe(true)
+    })
+  })
+  test("returns true if article exists", () => {
+    return checkArticleIDExists(2).then((result) => {
+      expect(result).toBe(true)
+    })
+  })
+  test("returns false if article does not exist", () => {
+    return checkArticleIDExists(99).then((result) => {
+      expect(result).toBe(false)
+    })
+  })
+})
+describe("checkUsernameExists", () => {
+  test("returns true if username exists", () => {
+    return checkUsernameExists("butter_bridge").then((result) => {
+      expect(result).toBe(true)
+    })
+  })
+  test("returns true if username exists", () => {
+    return checkUsernameExists("lurker").then((result) => {
+      expect(result).toBe(true)
+    })
+  })
+  test("returns true if article exists", () => {
+    return checkUsernameExists("testUser").then((result) => {
+      expect(result).toBe(false)
+    })
+  })
+  test("returns false if article does not exist", () => {
+    return checkUsernameExists("iDontExist").then((result) => {
+      expect(result).toBe(false)
+    })
+  })
+})
+describe("checkArgumentsAreValid", () => {
+  test("returns true if an array of arguments are all valid", () => {
+    const result = checkArgumentsAreValid('1', 'Hello World', 'butter_bridge')
+    expect(result).toBe(true)
+  })
+  test("returns true if an array with a single argument is valid", () => {
+    const result = checkArgumentsAreValid(["lurker"])
+    expect(result).toBe(true)
+  })
+  test("returns false if an array of a single argument is invalid", () => {
+    const result = checkArgumentsAreValid([undefined])
+    expect(result).toBe(false)
+  })
+  test("returns false if an array of arguments contains an invalid argument", () => {
+    const result = checkArgumentsAreValid(['1', 'Hello World', null])
+    expect(result).toBe(false)
+  })
+})
+describe("checkTopicExists", () => {
+  test("returns true if topic exists", () => {
+    return checkTopicExists("mitch").then((result) => {
+      expect(result).toBe(true)
+    })
+  })
+  test("returns false if topic does not exist", () => {
+    return checkTopicExists("not-a-topic").then()
+    .catch((err) => {
+      expect(err).toEqual({status: 404, message: "Not Found: No Topic Found under not-a-topic"})
+    })
+  })
+})

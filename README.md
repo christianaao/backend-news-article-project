@@ -2,7 +2,6 @@
 
 About this Project:
 
-
 Features of this Project:
 
 ~ this project was created using the Model View Controller architecture.
