@@ -15,7 +15,7 @@ exports.selectCommentsByArticleID = (article_id) => {
                     } else {
                         return Promise.reject({
                         status: 404,
-                        message: `Not Found: No Comments Found under Article ID ${article_id}`
+                        message: "Not Found: No Comments Found under This Article"
                         });
                     }
                 })
@@ -41,7 +41,7 @@ exports.insertComment = (article_id, body, username) => {
             if (validUsername === false) {
                 return Promise.reject({
                     status: 404,
-                    message: `Not Found: Username ${username} Does Not Exist`
+                    message: `Not Found: Username ${username} Not Found`
                 });
             }
         })
@@ -61,7 +61,7 @@ exports.removeCommentByCommentID = (comment_id) => {
         if (result.rows.length === 0) {
             return Promise.reject({
                 status: 404,
-                message: `Not Found: No Comment Found under Comment ID ${comment_id}`
+                message: "Not Found: No Comment Found under This Article"
             });
     }
     return result.rows[0];

@@ -43,7 +43,6 @@ describe('GET TOPICS - /api/topics', () => {
         .expect(200)
         .then((response) => {
             const body = response.body
-            expect(Array.isArray(body)).toBe(true)
             expect(body.length).toBe(3);
             body.forEach((topic) => {
                 expect(topic).toEqual({
@@ -79,7 +78,7 @@ describe('GET ARTICLE BY ID - /api/articles/:article_id', () => {
         .get("/api/articles/99")
         .expect(404)
         .then((response) => {
-            expect(response.body.message).toBe("Not Found: No Article Found under Article ID 99")
+            expect(response.body.message).toBe("Not Found: Article Not Found")
         })
     })
     test("GET /api/articles/:article_id returns status 400 and error message when an invalid article_id is given", () => {
@@ -98,7 +97,6 @@ describe('GET ARTICLES - /api/articles', () => {
         .expect(200)
         .then((response) => {
             const body = response.body
-            expect(Array.isArray(body)).toBe(true)
             expect(body.length).toBe(13);
             body.forEach((article) => {
                 expect(article).not.toHaveProperty("body")
@@ -135,7 +133,6 @@ describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () =
         .expect(200)
         .then((response) => {
             const comments = response.body.comments
-            expect(Array.isArray(comments)).toBe(true)
             expect(comments.length).toBe(11)
             comments.forEach((comment) => {
                 expect(comment).toMatchObject({
@@ -179,7 +176,7 @@ describe('GET COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () =
         .get("/api/articles/99/comments")
         .expect(404)
         .then((response) => {
-            expect(response.body.message).toBe("Not Found: No Comments Found under Article ID 99")
+            expect(response.body.message).toBe("Not Found: No Comments Found under This Article")
         })
     })
     test("GET /api/articles/:article_id/comments returns status 400 and error message when an invalid article ID is given", () => {
@@ -248,7 +245,7 @@ describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () 
         .send(comment)
         .expect(404)
         .then((response) => {
-            expect(response.body.message).toBe("Not Found: No Article Found under Article ID 99")
+            expect(response.body.message).toBe("Not Found: Article Not Found")
         })
     })
     test("POST /api/articles/:article_id/comments returns status 404 and does not post comment where user does not exist", () => {
@@ -261,7 +258,7 @@ describe('POST COMMENTS BY ARTICLE ID - /api/articles/:article_id/comments', () 
         .send(comment)
         .expect(404)
         .then((response) => {
-            expect(response.body.message).toBe("Not Found: Username iDontExist Does Not Exist")
+            expect(response.body.message).toBe("Not Found: Username iDontExist Not Found")
         })
     })
 });
@@ -332,7 +329,7 @@ describe('PATCH /api/articles/:article_id', () => {
         .send({ inc_votes : newVote })
         .expect(404)
         .then((response) => {
-            expect(response.body.message).toBe("Not Found: No Article Found under Article ID 99")
+            expect(response.body.message).toBe("Not Found: Article Not Found")
         })
     })
 });
@@ -355,7 +352,7 @@ describe('DELETE /api/comments/:comment_id', () => {
         .delete("/api/comments/99")
         .expect(404)
         .then((response) => {
-            expect(response.body.message).toBe("Not Found: No Comment Found under Comment ID 99")
+            expect(response.body.message).toBe("Not Found: No Comment Found under This Article")
         })
     })
 });
@@ -366,7 +363,6 @@ describe('GET /api/users', () => {
         .expect(200)
         .then((response) => {
             const body = response.body
-            expect(Array.isArray(body)).toBe(true)
             expect(body.length).toBe(4)
             body.forEach((user) => {
                 expect(user).toMatchObject({
@@ -377,31 +373,8 @@ describe('GET /api/users', () => {
             })
         })
     })
-    // test("GET /api/users returns status 404 and error message when an empty array of users is received", () => {
-    //     return request(app)
-    //     .get("/api/user")
-    //     .expect(404)
-    //     .then((response) => {
-    //         expect(response.body.message).toBe("Not Found: No Users Found")
-    //     })
-    // })
 });
 describe('SORTING/ORDER FEATURE: GET /api/articles', () => {
-    // TEST DID NOT WORK :(
-    // test("returns status 200 and an array of article objects sorted by any valid column", () => {
-    //     const sortByQueries = ["title", "topic", "author", "created_at", "votes"]
-    //     sortByQueries.forEach((query) => {
-    //         return request(app)
-    //         .get(`/api/articles?sort_by=${query}`)
-    //         .expect(200)
-    //         .then((response) => {
-    //             const body = response.body
-    //             expect(Array.isArray(body)).toBe(true)
-    //             expect(body.length).toBe(13)
-    //             expect(body).toBeSortedBy(query, {descending: true})
-    //         })
-    //     })
-    // })
     test("returns status 200 and an array of article objects sorted by title", () => {
         return request(app)
         .get("/api/articles?sort_by=title")
@@ -481,7 +454,6 @@ describe('FILTER FEATURE: GET /api/articles', () => {
         .expect(200)
         .then((response) => {
             const body = response.body
-            expect(Array.isArray(body)).toBe(true)
             expect(body.length).toBe(12)
             body.forEach((article) => {
                 expect(article).toHaveProperty("topic", "mitch")

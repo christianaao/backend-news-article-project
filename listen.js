@@ -1,9 +1,4 @@
-const app = express()
+const app = require('./app.js')
+const { PORT = 9090 } = process.env;
 
-app.listen(9082, (err) => {
-    if (err) {
-        console.log(err)
-    } else {
-        console.log("Listening on 9082")
-    }
-})
+app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
