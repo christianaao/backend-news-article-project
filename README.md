@@ -20,7 +20,7 @@ This project was written in JavaScript through test driven development (TDD) usi
 
 **_In order to run this server locally:_**
 
-First clone or fork this repo
+First, clone or fork this repo
 
 Next, run: `npm install` in your terminal to install all dependencies. 
 
