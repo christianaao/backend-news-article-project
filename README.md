@@ -12,8 +12,6 @@ To use this link, make a request to an existing endpoint, such as `/api/users`, 
 
 Check out `endpoints.json` for all the available endpoints.
 
----
-
 ## Features of this Project
 
 This project was created using Model View Controller architecture.
