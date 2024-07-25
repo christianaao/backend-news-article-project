@@ -16,18 +16,17 @@ Check out `endpoints.json` for all the available endpoints.
 
 This project was created using Model View Controller architecture.
 
-This project was written in JavaScript through test driven development (TDD) using Jest and SuperTest.
+This project was written in JavaScript through Test Driven Development (TDD) using Jest and SuperTest.
 
 ## Setup
 
 **_In order to run this server locally:_**
 
-First, clone or fork this repo
+1. clone or fork this repo
 
-Next, run: `npm install` in your terminal to install all dependencies. 
+2. run: `npm install` in your terminal to install all dependencies. 
 
 #### The required dependencies include:
-
  - dotenv
  - pg
 
@@ -37,18 +36,18 @@ Next, run: `npm install` in your terminal to install all dependencies.
  - supertest
  - husky
 
-Thirdly, create two dotenv files: `.env.test` and `.env.development`, and insert `PGDATABASE=nc_news_test` and `PGDATABASE=nc_news` to the files respectively.
+3. create two dotenv files: `.env.test` and `.env.development`, and insert `PGDATABASE=nc_news_test` and `PGDATABASE=nc_news` to the files respectively.
 
-Finally, run `npm run setup-dbs` and `npm run seed` in the terminal.
+4. run `npm run setup-dbs` and `npm run seed` in the terminal.
 
 To run the code, run `npm run dev` or `npm test` in the terminal.
 
 ☺ I hope you enjoy testing my server ☺
 
 ## Software Requirements
-Node version: >= 14 required
+**Node version**: 14 required or higher
 
-Postgres version: >= 8.8 required
+**Postgres version**: 8.8 required or higher
 
 ---
 
