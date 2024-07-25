@@ -6,7 +6,9 @@ This API is the backend server of my news article website. It is designed to pro
 
 ## Host Link
 
-_link here_
+(https://news-article-project.onrender.com/)
+
+To use this link, make a request to an existing endpoint such as `/api/users` (check out `endpoints.json` for all the available endpoints) to request the data.
 
 ---
 
