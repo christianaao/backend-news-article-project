@@ -7,9 +7,11 @@ const { getEndpoints } = require("./controllers/endpoints.controller")
 const { getArticleByID, getArticles, patchArticleVotesByArticleID } = require("./controllers/articles.controllers")
 const { getCommentsByArticleID, postComment, deleteComment } = require("./controllers/comments.controllers")
 const { getUsers } = require("./controllers/users.controller")
-
+const cors = require('cors');
 
 // Get Requests
+
+app.use(cors());
 
 app.get("/api", getEndpoints)
 
