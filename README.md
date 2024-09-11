@@ -22,25 +22,15 @@ This project was written in JavaScript through Test Driven Development (TDD) usi
 
 **_In order to run this server locally:_**
 
-1. clone or fork this repo
+1. Clone or fork this repo
 
-2. run: `npm install` in your terminal to install all dependencies. 
+2. Run `npm install` in your terminal to install all dependencies. 
 
-#### The required dependencies include:
- - dotenv
- - pg
+3. Create two dotenv files: `.env.test` and `.env.development`, and insert `PGDATABASE=nc_news_test` and `PGDATABASE=nc_news` to the files respectively.
 
-#### Dev Dependencies:
- - jest (including jest-extended and jest-sorted)
- - pg-format
- - supertest
- - husky
+4. Run `npm run setup-dbs` and `npm run seed` in the terminal.
 
-3. create two dotenv files: `.env.test` and `.env.development`, and insert `PGDATABASE=nc_news_test` and `PGDATABASE=nc_news` to the files respectively.
-
-4. run `npm run setup-dbs` and `npm run seed` in the terminal.
-
-To run the code, run `npm run dev` or `npm test` in the terminal.
+5. To run the code, run `npm run dev` or `npm test` in the terminal.
 
 ☺ I hope you enjoy testing my server ☺
 

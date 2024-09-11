@@ -55,6 +55,10 @@
   "POST /api/articles/:article_id/comments": {
     "description": "provides an object of a posted comment with the following properties: comment_id, votes, created_at, author, body, article_id under the given article ID",
     "queries": [],
+    "exampleRequest": {
+      "username": "butter_bridge",
+      "body": "Hello World"
+  },
     "exampleResponse": {
       "comment_id": 19,
       "body": "Hello World",
