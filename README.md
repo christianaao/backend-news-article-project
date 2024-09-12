@@ -13,7 +13,7 @@ To use this link, make a request to an existing endpoint, such as `/api/users`, 
 
 Check out `endpoints.json` for all the available endpoints.
 
-Frontend APP: _coming soon_<br/>
+Frontend App: _coming soon_<br/>
 Frontend Repo: https://github.com/christianaao/frontend-news-article-project
 
 ## Features of this Project
