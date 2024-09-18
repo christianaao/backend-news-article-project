@@ -4,6 +4,8 @@
 
 This API is the backend server of my news article website. It is designed to programmatically access application data, emulating the development of a real-world backend service (similar to Reddit) that supplies data to the front-end architecture.
 
+This project is still under development and is continually being improved.
+
 ## Project Links
 
 Backend API : https://news-article-project.onrender.com/<br/>
