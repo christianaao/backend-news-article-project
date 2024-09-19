@@ -28,7 +28,7 @@ exports.selectArticleByID = (article_id) => {
 
 exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
 
-    const ValidSortByQueries = ["title", "topic", "author", "created_at", "votes"]
+    const ValidSortByQueries = ["title", "topic", "author", "created_at", "comment_count", "votes"]
 
     const validOrders = ["ASC", "DESC", "asc", "desc"]
 
@@ -65,8 +65,13 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
         queryTopics.push(topic)
     }
 
-    sqlString += ` GROUP BY
+    if (sort_by === "comment_count") {
+        sqlString += ` GROUP BY
+            articles.article_id ORDER BY comment_count ${order};`
+    } else {
+            sqlString += ` GROUP BY
             articles.article_id ORDER BY articles.${sort_by} ${order};`
+    }
 
     return db.query(sqlString, queryTopics)
     .then((result) => {

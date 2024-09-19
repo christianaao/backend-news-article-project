@@ -408,6 +408,17 @@ describe('SORTING/ORDER FEATURE: GET /api/articles', () => {
             expect(body).toBeSortedBy("author", {descending: true})
         })
     })
+    test("returns status 200 and an array of article objects sorted by comment_count", () => {
+        return request(app)
+        .get("/api/articles?sort_by=comment_count")
+        .expect(200)
+        .then((response) => {
+            const body = response.body
+            expect(Array.isArray(body)).toBe(true)
+            expect(body.length).toBe(13)
+            expect(body).toBeSortedBy("comment_count", {coerce: true, descending: true})
+        })
+    })
     test("returns status 200 and an array of article objects sorted by votes", () => {
         return request(app)
         .get("/api/articles?sort_by=votes")
