@@ -100,5 +100,33 @@
       "name": "jonny",
       "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
     }
+  },
+  "SORTING FEATURE BY ASC/DESC: GET /api/articles": {
+    "description": "provides an array of article objects sorted by a query, defaulting to descending order",
+    "queries": ["title", "topic", "author", "votes", "asc", "desc"],
+    "exampleRequest": ["/api/articles?sort_by=title", "/api/articles?order=asc"],
+    "exampleResponse": {
+      "title": "Seafood substitutions are increasing",
+      "topic": "cooking",
+      "author": "weegembump",
+      "body": "Text from the article..",
+      "created_at": "2018-05-30T15:59:13.341Z",
+      "votes": 0,
+      "comment_count": 6
+    }
+  },
+  "FILTER FEATURE BY TOPIC: GET /api/articles": {
+    "description": "provides an array of filtered article objects by the specified topic value",
+    "queries": ["coding", "football", "cooking"],
+    "exampleRequest": "/api/articles?topic=cooking",
+    "exampleResponse": {
+      "title": "Seafood substitutions are increasing",
+      "topic": "cooking",
+      "author": "weegembump",
+      "body": "Text from the article..",
+      "created_at": "2018-05-30T15:59:13.341Z",
+      "votes": 0,
+      "comment_count": 6
+    }
   }
 }
