@@ -103,7 +103,7 @@
   },
   "SORTING FEATURE BY ASC/DESC: GET /api/articles": {
     "description": "provides an array of article objects sorted by a query, defaulting to descending order",
-    "queries": ["title", "topic", "author",, "comment_count", "votes", "asc", "desc"],
+    "queries": ["title", "topic", "author", "created_at", "comment_count", "votes", "asc", "desc"],
     "exampleRequest": ["/api/articles?sort_by=title", "/api/articles?order=asc"],
     "exampleResponse": {
       "title": "Seafood substitutions are increasing",
