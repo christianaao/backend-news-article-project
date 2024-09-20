@@ -30,20 +30,22 @@ This project was written in JavaScript through Test Driven Development (TDD) usi
 
 1. Clone or fork this repo.
 
-2. Run `npm install` in your terminal to install all dependencies. 
+2. In your terminal, locate the directory you would like to save the code to and type `git clone` followed by the cloned/forked repo link.
 
-3. Create two dotenv files: `.env.test` and `.env.development`, and insert `PGDATABASE=nc_news_test` and `PGDATABASE=nc_news` to the files respectively.
+3. In the cloned directory, type `npm install` in your terminal to install all dependencies. 
 
-4. Run `npm run setup-dbs` and `npm run seed` in the terminal.
+4. Create two dotenv files: `.env.test` and `.env.development`, and insert `PGDATABASE=nc_news_test` and `PGDATABASE=nc_news` to the files respectively.
 
-5. To run the code, run `npm run dev` or `npm test` in the terminal.
+5. Type `npm run setup-dbs` and `npm run seed` in the terminal.
+
+6. To run the code, run `npm run dev` or `npm test` in the terminal.
 
 ☺ I hope you enjoy testing my server ☺
 
 ## Software Requirements
-**Node version**: 14 required or higher
+**Node version**: 14 or higher required
 
-**Postgres version**: 8.8 required or higher
+**Postgres version**: 8.8 or higher required
 
 ---
 
