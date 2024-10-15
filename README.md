@@ -34,11 +34,11 @@ This project was written in JavaScript through Test Driven Development (TDD) usi
 
 3. In the cloned directory, type `npm install` in your terminal to install all dependencies. 
 
-4. Create two dotenv files: `.env.test` and `.env.development`, and insert `PGDATABASE=nc_news_test` and `PGDATABASE=nc_news` to the files respectively.
+4. Create two dotenv files: `.env.test` and `.env.development`, and insert `PGDATABASE=nc_news_test` and `PGDATABASE=nc_news` to the files respectively. This will allow you to connect to the databases.
 
-5. Type `npm run setup-dbs` and `npm run seed` in the terminal.
+5. Type `npm run setup-dbs` and `npm run seed` in the terminal to set up the database.
 
-6. To run the code, run `npm run dev` or `npm test` in the terminal.
+6. To run the code, run `npm run dev` or `npm test` in the terminal to seed the local database.
 
 ☺ I hope you enjoy testing my server ☺
 
