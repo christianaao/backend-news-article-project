@@ -8,10 +8,10 @@ This project is still under development and is continuously being improved.
 
 ## Project Links
 
-Backend API: https://news-article-project.onrender.com/api/<br/>
+Backend API: https://news-article-project.onrender.com<br/>
 Backend Repo: https://github.com/christianaao/backend-news-article-project
 
-To use this link, make a request to an existing endpoint, such as `/api/users`, to request the data.
+To use this link, make a request to an existing endpoint, such as `/api/users`, to request the data.You can view all available endpoints on https://news-article-project.onrender.com/api/<br/>
 
 Check out `endpoints.json` for all the available endpoints.
 
