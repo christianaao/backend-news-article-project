@@ -1,4 +1,4 @@
-# Back End News API Project
+# Community Connection News API
 
 ## About this Project
 
