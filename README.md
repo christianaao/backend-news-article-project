@@ -24,9 +24,15 @@ This project was created using Model View Controller architecture.
 
 This project was written in JavaScript through Test Driven Development (TDD) using Jest and SuperTest.
 
-## Setup
+## Running this Project Locally
 
-**_In order to run this server locally:_**
+### Installation
+
+To install PostgreSQL: https://www.w3schools.com/postgresql/postgresql_install.php
+
+To install npm: `npm install npm@latest -g`
+
+### Setup
 
 1. Clone or fork this repo.
 
