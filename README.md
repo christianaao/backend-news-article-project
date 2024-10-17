@@ -11,9 +11,8 @@ This project is still under development and is continuously being improved.
 Backend API: https://news-article-project.onrender.com<br/>
 Backend Repo: https://github.com/christianaao/backend-news-article-project
 
-To use this link, make a request to an existing endpoint, such as `/api/users`, to request the data.You can view all available endpoints on https://news-article-project.onrender.com/api/<br/>
-
-Check out `endpoints.json` for all the available endpoints.
+To use this link, make a request to an existing endpoint, such as `/api/users`, to request and view the data. See below for a list of all available endpoints.
+You can view all available endpoints on https://news-article-project.onrender.com/api/<br/>
 
 Frontend App: https://frontend-news-article-project.netlify.app/<br/>
 Frontend Repo: https://github.com/christianaao/frontend-news-article-project
@@ -23,6 +22,20 @@ Frontend Repo: https://github.com/christianaao/frontend-news-article-project
 This project was created using Model View Controller architecture.
 
 This project was written in JavaScript through Test Driven Development (TDD) using Jest and SuperTest.
+
+### Available Endpoints
+
+* GET /api <br>
+* GET /api/topics <br>
+* GET /api/users <br>
+* GET /api/articles <br>
+* GET /api/articles/:article_id <br>
+* PATCH /api/articles/:article_id <br>
+* GET /api/articles/:article_id/comments <br>
+* POST /api/articles/:article_id/comments <br>
+* DELETE /api/comments/:comment_id <br>
+
+You can also find this information in `endpoints.json` file.
 
 ## Running this Project Locally
 
